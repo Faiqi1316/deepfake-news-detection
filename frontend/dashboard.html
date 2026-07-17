@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Dashboard • Deepfake News Detector</title>
+  <link rel="stylesheet" href="/css/styles.css?v=20260314"/>
+  <script src="/js/auth-guard.js?v=20260314"></script>
+</head>
+<body>
+<header class="header">
+  <div class="container nav">
+    <a class="brand" href="/"><img class="logo-img" src="/img/logo.svg" alt="Deepfake News Detector logo"/><span>Deepfake News Detector</span></a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/predict.html" data-requires-auth="true">Predict</a>
+      <a href="/fact-check.html" data-requires-auth="true">Fact Check</a>
+      <a href="/analyze-url.html" data-requires-auth="true">Analyze URL</a>
+      <a href="/analytics.html" data-requires-auth="true">Analytics</a>
+      <a href="/history.html" data-requires-auth="true">History</a>
+      <a href="/help.html">Help</a>
+      <a href="/login.html" class="nav-login" data-when="guest" data-display="inline-flex">Login</a>
+      <a href="/register.html" data-when="guest">Register</a>
+      <a href="#" id="logout-btn" data-when="auth" data-display="inline" style="display:none">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="section">
+  <div class="container">
+
+    <!-- Welcome Banner -->
+    <div class="dash-banner">
+      <div>
+        <h1 style="margin:0 0 4px">Welcome back, <span id="dash-user" style="color:var(--primary-2)">...</span> 👋</h1>
+        <p class="note" style="margin:0">Your personal misinformation analysis workspace</p>
+      </div>
+      <div class="dash-actions">
+        <a class="btn primary" href="/predict.html">+ New Analysis</a>
+        <a class="btn" href="/fact-check.html">Fact Check</a>
+      </div>
+    </div>
+
+    <div class="panel-soft mb-4">
+      <div class="detail-grid">
+        <div class="detail-card">
+          <div class="small-label">Project snapshot</div>
+          <h3>What this workspace is for</h3>
+          <p>The dashboard gives you a single place to review text and URL analyses, then revisit confidence, sources, and explanation history when you need it.</p>
+        </div>
+        <div class="detail-card">
+          <div class="small-label">Deepfake detection history</div>
+          <h3>How the field changed</h3>
+          <p>Detection moved from narrow face artifact checks to multimodal verification. This project reflects that shift by combining classifier output, evidence retrieval, and history tracking.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="grid cols-4">
+      <div class="card stat-card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-number" id="stat-total">--</div>
+        <div class="stat-label">Total Analyses</div>
+        <div class="stat-sub" id="stat-recent7"></div>
+      </div>
+      <div class="card stat-card" style="border-color:rgba(239,68,68,.3)">
+        <div class="stat-icon">🚨</div>
+        <div class="stat-number" style="color:var(--danger)" id="stat-fake">--</div>
+        <div class="stat-label">Likely Fake</div>
+      </div>
+      <div class="card stat-card" style="border-color:rgba(34,197,94,.3)">
+        <div class="stat-icon">✅</div>
+        <div class="stat-number" style="color:var(--success)" id="stat-real">--</div>
+        <div class="stat-label">Likely Real</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-number" id="stat-conf">--%</div>
+        <div class="stat-label">Avg Confidence</div>
+      </div>
+    </div>
+
+    <div class="metric-strip mt-4">
+      <div class="metric"><span class="metric-value" id="metric-coverage">Text-focused</span><span class="metric-label">Text and URL</span></div>
+      <div class="metric"><span class="metric-value">Explainable</span><span class="metric-label">Sentence and evidence details</span></div>
+      <div class="metric"><span class="metric-value">Auditable</span><span class="metric-label">History and export ready</span></div>
+      <div class="metric"><span class="metric-value">Practical</span><span class="metric-label">Built for real review workflows</span></div>
+    </div>
+
+    <!-- Charts row -->
+    <div class="grid cols-2 mt-4">
+      <div class="card">
+        <h3 style="margin:0 0 4px">Verdict Distribution</h3>
+        <p class="note" style="margin:0 0 8px;font-size:12px">5-category verdict distribution across all your checks</p>
+        <div id="verdict-donut"><p class="note">No data yet</p></div>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 4px">Analysis by Type</h3>
+        <p class="note" style="margin:0 0 8px;font-size:12px">Breakdown of text and URL analyses</p>
+        <div id="type-bars"><p class="note">No data yet</p></div>
+      </div>
+    </div>
+
+    <!-- Activity Timeline -->
+    <div class="card mt-4">
+      <h3 style="margin:0 0 4px">30-Day Activity</h3>
+      <p class="note" style="margin:0 0 4px;font-size:12px">Daily analysis count over the last month</p>
+      <div id="activity-timeline"><p class="note">No recent activity recorded</p></div>
+    </div>
+
+    <!-- Recent Predictions -->
+    <div class="card mt-4">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="margin:0">Recent Predictions</h3>
+        <a href="/history.html" class="btn ghost" style="padding:6px 12px;font-size:13px">View All →</a>
+      </div>
+      <table class="table">
+        <thead>
+          <tr><th>Date</th><th>Type</th><th>Verdict</th><th>Confidence</th><th>Snippet</th></tr>
+        </thead>
+        <tbody id="dash-recent">
+          <tr><td colspan="5" class="note" style="padding:20px;text-align:center">
+            <span class="spinner"></span> Loading recent predictions...
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel-soft mt-4">
+      <div class="section-kicker">Meaningful context</div>
+      <h3 style="margin:10px 0 8px">How to read the dashboard</h3>
+      <div class="detail-grid">
+        <div class="detail-card"><h3>Verdict distribution</h3><p>Shows how your analyses are spreading across Real, Fake, and higher-level verdict categories so you can spot patterns in what you review most often.</p></div>
+        <div class="detail-card"><h3>Type breakdown</h3><p>Highlights whether you rely more on text or URL checks. That makes the project feel like a real usage dashboard rather than a placeholder.</p></div>
+      </div>
+    </div>
+
+    <!-- Quick Action Cards -->
+    <div class="grid cols-3 mt-4">
+      <a href="/predict.html" class="card action-card">
+        <span class="action-icon">📝</span>
+        <h3 style="margin:0 0 6px">Analyze Text</h3>
+        <p class="note" style="margin:0">Paste article text or news content for AI classification with sentence-level explanation</p>
+      </a>
+      <a href="/analyze-url.html" class="card action-card">
+        <span class="action-icon">🔗</span>
+        <h3 style="margin:0 0 6px">Analyze URL</h3>
+        <p class="note" style="margin:0">Enter a news article URL and we'll automatically fetch and analyze its content</p>
+      </a>
+      <a href="/fact-check.html" class="card action-card">
+        <span class="action-icon">🔍</span>
+        <h3 style="margin:0 0 6px">Fact Check</h3>
+        <p class="note" style="margin:0">Extract individual claims and verify them against live news sources, Wikipedia, and GDELT</p>
+      </a>
+      <a href="/analytics.html" class="card action-card">
+        <span class="action-icon">📈</span>
+        <h3 style="margin:0 0 6px">My Analytics</h3>
+        <p class="note" style="margin:0">Visualize your prediction history, model usage patterns, and detection trends over time</p>
+      </a>
+      <a href="/history.html" class="card action-card">
+        <span class="action-icon">🕐</span>
+        <h3 style="margin:0 0 6px">History</h3>
+        <p class="note" style="margin:0">Browse, filter, and export your full prediction history with confidence scores</p>
+      </a>
+    </div>
+
+    <!-- Model Info -->
+    <div class="card mt-4" style="border-color:rgba(109,94,247,.3)">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <div style="font-size:2rem">🧠</div>
+        <div>
+          <h3 style="margin:0 0 4px">About the AI Model</h3>
+          <p class="note" style="margin:0">
+            Text classification: <strong>BERT-based classifier</strong>, cross-checked against <strong>live web evidence</strong> (GDELT, Wikipedia, NewsAPI) with an LLM judge before returning a verdict.
+            Fact-check evidence: <strong>GDELT + NewsAPI + Wikipedia + Google Fact Check</strong>.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-meta">
+      <div>© 2026 Deepfake News Detector</div>
+      <div class="note"><a href="/privacy.html">Privacy</a> • <a href="/support.html">Support</a> • <strong>Academic use only</strong></div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/auth-guard.js?v=20260314"></script>
+<script src="/js/app.js?v=20260314"></script>
+<script src="/js/dashboard.js?v=20260314"></script>
+</body>
+</html>

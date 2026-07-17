@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Analytics • Deepfake News Detector</title>
+  <link rel="stylesheet" href="/css/styles.css?v=20260314"/>
+</head>
+<body>
+<header class="header">
+  <div class="container nav">
+    <a class="brand" href="/"><img class="logo-img" src="/img/logo.svg" alt="Deepfake News Detector logo"/><span>Deepfake News Detector</span></a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/predict.html" data-requires-auth="true">Predict</a>
+      <a href="/fact-check.html" data-requires-auth="true">Fact Check</a>
+      <a href="/analyze-url.html" data-requires-auth="true">Analyze URL</a>
+      <a href="/analytics.html" data-requires-auth="true">Analytics</a>
+      <a href="/history.html" data-requires-auth="true">History</a>
+      <a href="/help.html">Help</a>
+      <a href="/login.html" class="nav-login" data-when="guest" data-display="inline-flex">Login</a>
+      <a href="/register.html" data-when="guest">Register</a>
+      <a href="#" id="logout-btn" data-when="auth" data-display="inline" style="display:none">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="section">
+  <div class="container" id="analytics-body">
+    <h1 style="margin:0 0 6px">My Analytics</h1>
+    <p class="note" style="margin:0 0 24px">A visual summary of your detection activity and model performance.</p>
+
+    <!-- Stat Cards -->
+    <div class="grid cols-4">
+      <div class="card stat-card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-number" id="an-total">--</div>
+        <div class="stat-label">Total Analyses</div>
+      </div>
+      <div class="card stat-card" style="border-color:rgba(239,68,68,.3)">
+        <div class="stat-icon">🚨</div>
+        <div class="stat-number" style="color:var(--danger)" id="an-fake">--</div>
+        <div class="stat-label">Fake Detected</div>
+      </div>
+      <div class="card stat-card" style="border-color:rgba(34,197,94,.3)">
+        <div class="stat-icon">✅</div>
+        <div class="stat-number" style="color:var(--success)" id="an-real">--</div>
+        <div class="stat-label">Real Verified</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-number" id="an-conf">--%</div>
+        <div class="stat-label">Avg Confidence</div>
+      </div>
+    </div>
+
+    <!-- This-week + model accuracy banner -->
+    <div class="card mt-4" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+      <div style="font-size:2rem">📅</div>
+      <div>
+        <div style="font-size:1.6rem;font-weight:700" id="an-week">--</div>
+        <div class="stat-label">Analyses this week</div>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div class="note" style="margin-bottom:2px">Verification approach</div>
+        <div style="font-size:1.2rem;font-weight:800;color:var(--primary-2)">Classifier + Live Web</div>
+        <div class="note">BERT-based classifier cross-checked against live evidence</div>
+      </div>
+    </div>
+
+    <!-- Charts row -->
+    <div class="grid cols-2 mt-4">
+      <div class="card">
+        <h3 style="margin:0 0 4px">Verdict Distribution</h3>
+        <p class="note" style="margin:0 0 12px;font-size:12px">5-category breakdown across all your analyses</p>
+        <div id="verdict-ring"><p class="note">Loading…</p></div>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 4px">Verdict Category Counts</h3>
+        <p class="note" style="margin:0 0 12px;font-size:12px">How often each verdict category was assigned</p>
+        <div id="verdict-cat-bars"><p class="note">Loading…</p></div>
+      </div>
+    </div>
+
+    <!-- Type + 30-day timeline row -->
+    <div class="grid cols-2 mt-4">
+      <div class="card">
+        <h3 style="margin:0 0 4px">Analysis by Type</h3>
+        <p class="note" style="margin:0 0 12px;font-size:12px">Text and URL breakdowns</p>
+        <div id="type-bars"><p class="note">Loading…</p></div>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 4px">30-Day Activity</h3>
+        <p class="note" style="margin:0 0 10px;font-size:12px">Daily analysis count over the past month</p>
+        <div id="activity-tl"><p class="note">Loading…</p></div>
+      </div>
+    </div>
+
+    <!-- Calibration trend -->
+    <div class="card mt-4" style="border-color:rgba(109,94,247,.2)">
+      <h3 style="margin:0 0 4px">🎚️ Feedback Calibration Trend</h3>
+      <p class="note" style="margin:0 0 12px;font-size:12px">Weekly agreement rate between your feedback and AI verdicts — used to fine-tune confidence scores</p>
+      <div id="calib-summary" style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:16px"></div>
+      <div id="calib-chart"><p class="note">Loading…</p></div>
+    </div>
+
+    <!-- Model info -->
+    <div class="card mt-4" style="border-color:rgba(109,94,247,.3)">
+      <h3 style="margin:0 0 12px">📊 How Verification Works</h3>
+      <div class="grid cols-2" style="gap:12px">
+        <div>
+          <div class="note" style="margin-bottom:8px;font-weight:600">Text classifier</div>
+          <div class="note" style="font-size:12px">BERT-based model (Hugging Face) gives an initial Real/Fake signal from the text alone.</div>
+        </div>
+        <div>
+          <div class="note" style="margin-bottom:8px;font-weight:600">Live web verification</div>
+          <div class="note" style="font-size:12px">Claims are checked against GDELT, Wikipedia, NewsAPI, and Google Fact Check; an LLM judge weighs the evidence and can override the classifier when they disagree.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-meta">
+      <div>© 2026 Deepfake News Detector</div>
+      <div class="note"><a href="/privacy.html">Privacy</a> • <a href="/support.html">Support</a> • <strong>Academic use only</strong></div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/auth-guard.js?v=20260314"></script>
+<script src="/js/app.js?v=20260314"></script>
+<script src="/js/analytics.js?v=20260314"></script>
+</body>
+</html>

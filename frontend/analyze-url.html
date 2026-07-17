@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Analyze URL • Deepfake News Detector</title>
+  <link rel="stylesheet" href="/css/styles.css?v=20260314"/>
+</head>
+<body>
+<header class="header">
+  <div class="container nav">
+    <a class="brand" href="/"><img class="logo-img" src="/img/logo.svg" alt="Deepfake News Detector logo"/><span>Deepfake News Detector</span></a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/predict.html" data-requires-auth="true">Predict</a>
+      <a href="/fact-check.html" data-requires-auth="true">Fact Check</a>
+      <a href="/analyze-url.html" data-requires-auth="true">Analyze URL</a>
+      <a href="/analytics.html" data-requires-auth="true">Analytics</a>
+      <a href="/history.html" data-requires-auth="true">History</a>
+      <a href="/help.html">Help</a>
+      <a href="/login.html" class="nav-login" data-when="guest" data-display="inline-flex">Login</a>
+      <a href="/register.html" data-when="guest">Register</a>
+      <a href="#" id="logout-btn" data-when="auth" data-display="inline" style="display:none">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="section">
+  <div class="container">
+    <h1 style="margin:0 0 6px">Analyze a News URL</h1>
+    <p class="note" style="margin:0 0 24px">Enter any publicly accessible news article URL. We'll fetch it server-side, extract visible text, and run our AI classifier automatically.</p>
+
+    <div class="grid cols-2">
+      <!-- Input column -->
+      <div>
+        <div class="card">
+          <h3 style="margin:0 0 12px">Article URL</h3>
+          <div class="form-row">
+            <label>Paste a news article URL</label>
+            <input id="url-input" class="input" type="url" placeholder="https://www.example.com/news/some-article"/>
+          </div>
+          <div class="form-actions" style="gap:12px;align-items:center">
+            <button class="btn primary" id="url-btn">Fetch &amp; Analyze</button>
+            <span id="url-status" class="note"></span>
+          </div>
+        </div>
+
+        <!-- Sample URL helpers -->
+        <div class="card" style="margin-top:12px">
+          <h3 style="margin:0 0 8px">Try a sample URL</h3>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn ghost" style="font-size:12px;text-align:left;justify-content:flex-start"
+              data-sample-url="https://en.wikipedia.org/wiki/Fake_news">
+              📎 Wikipedia: Fake news article
+            </button>
+            <button class="btn ghost" style="font-size:12px;text-align:left;justify-content:flex-start"
+              data-sample-url="https://en.wikipedia.org/wiki/Misinformation">
+              📎 Wikipedia: Misinformation article
+            </button>
+          </div>
+        </div>
+
+        <!-- Result area -->
+        <div id="url-result" style="margin-top:12px;display:none"></div>
+      </div>
+
+      <!-- Info column -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card">
+          <h3 style="margin:0 0 8px">🔗 How URL Analysis Works</h3>
+          <ol class="list" style="padding-left:18px;margin:0;font-size:13px;line-height:1.8">
+            <li>The URL is fetched server-side (no CORS issues)</li>
+            <li>Visible article text is extracted via HTML parsing</li>
+            <li>Text is classified with a BERT-based model, then cross-checked against live web evidence</li>
+            <li>Verdict, confidence, and article title/snippet are returned</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <h3 style="margin:0 0 8px">⚠️ Known Limitations</h3>
+          <ul class="list" style="padding-left:18px;margin:0;font-size:13px;line-height:1.8">
+            <li>Paywalled articles will not be accessible</li>
+            <li>JavaScript-rendered (SPA) pages may extract little text</li>
+            <li>Very short articles (&lt; 100 characters) give low confidence</li>
+            <li>The fetch request uses a neutral User-Agent header</li>
+          </ul>
+        </div>
+
+        <div class="card" style="border-color:rgba(109,94,247,.3)">
+          <h3 style="margin:0 0 8px">💡 Next Steps</h3>
+          <p class="note" style="margin:0 0 8px;font-size:13px">After getting a verdict you can:</p>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <a href="/investigate.html" style="color:var(--primary-2);font-size:13px">→ Open the full investigation report</a>
+            <a href="/fact-check.html" style="color:var(--primary-2);font-size:13px">→ Run a full fact-check with source evidence</a>
+            <a href="/predict.html" style="color:var(--primary-2);font-size:13px">→ Paste extracted text for sentence-level explanation</a>
+            <a href="/history.html" style="color:var(--primary-2);font-size:13px">→ View this analysis in your history</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-meta">
+      <div>© 2026 Deepfake News Detector</div>
+      <div class="note"><a href="/privacy.html">Privacy</a> • <a href="/support.html">Support</a> • <strong>Academic use only</strong></div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/auth-guard.js?v=20260314"></script>
+<script src="/js/app.js?v=20260314"></script>
+<script src="/js/analyze-url.js?v=20260314"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Why this website • Deepfake News Detector</title>
+    <link rel="stylesheet" href="/css/styles.css?v=20251116" />
+</head>
+
+<body>
+    <header class="header">
+        <div class="container nav"><a class="brand" href="/"><img class="logo-img" src="/img/logo.svg"
+                    alt="logo" /><span>Deepfake News Detector</span></a>
+                <nav><a href="/">Home</a><a href="/deepfake-detection.html">Solutions</a><a href="/predict.html" data-requires-auth="true">Predict</a><a href="/fact-check.html" data-requires-auth="true">Fact Check</a><a href="/history.html" data-requires-auth="true">History</a><a href="/why.html">Why?</a><a href="/help.html">Help</a><a
+                    href="/login.html" class="nav-login" data-when="guest" data-display="inline-flex">Login</a><a
+                    href="/register.html" data-when="guest">Register</a><a href="#" id="logout-btn" data-when="auth"
+                    data-display="inline" style="display:none">Logout</a></nav>
+        </div>
+    </header>
+    <main class="section">
+        <div class="container" style="max-width:1000px">
+            <div class="hero-card">
+                <div class="section-kicker">Why this website?</div>
+                <h1 style="margin:10px 0 8px">Built to make deepfake review feel practical</h1>
+                <p class="section-intro" style="margin:0">This project is designed to look and behave like a real investigation workspace. The goal is not just to label content, but to present the reasoning, the history, and the evidence in a way that feels usable.</p>
+            </div>
+            <div class="grid cols-3 mt-4">
+                <div class="card">
+                    <h3>The challenge</h3>
+                    <p class="note">Manipulated media and misleading claims appear across social, messaging, and the open web, so a single-signal detector is rarely enough.</p>
+                </div>
+                <div class="card">
+                    <h3>Our approach</h3>
+                    <p class="note">A hybrid pipeline analyzes text and URLs, then blends local model output with explanation and evidence layers.</p>
+                </div>
+                <div class="card">
+                    <h3>Transparency</h3>
+                    <p class="note">Labels, confidence, and history are visible by design so the project feels accountable and easier to trust.</p>
+                </div>
+            </div>
+            <div class="detail-grid mt-4" data-reveal>
+                <div class="detail-card"><h3>Unified workflow</h3><p>One place to screen news text and URLs with consistent outputs and a unified review flow.</p></div>
+                <div class="detail-card"><h3>Calibrated confidence</h3><p>Scores are constrained to avoid overconfidence in borderline cases and make the UI easier to interpret.</p></div>
+                <div class="detail-card"><h3>Privacy-first</h3><p>Your predictions are scoped to your account; delete or export anytime.</p></div>
+                <div class="detail-card"><h3>Good product feel</h3><p>Typography, spacing, and history panels are tuned so the project reads like a finished system rather than a prototype.</p></div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">© <span id="y"></span> Deepfake News Detector</div>
+    </footer>
+    <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+    <script src="/js/auth-guard.js?v=20251116"></script>
+    <script src="/js/app.js?v=20251116"></script>
+</body>
+
+</html>

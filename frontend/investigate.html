@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Investigation Report • Deepfake News Detector</title>
+  <link rel="stylesheet" href="/css/styles.css?v=20260314"/>
+</head>
+<body>
+<header class="header">
+  <div class="container nav">
+    <a class="brand" href="/"><img class="logo-img" src="/img/logo.svg" alt="Deepfake News Detector logo"/><span>Deepfake News Detector</span></a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/predict.html" data-requires-auth="true">Predict</a>
+      <a href="/fact-check.html" data-requires-auth="true">Fact Check</a>
+      <a href="/analyze-url.html" data-requires-auth="true">Analyze URL</a>
+      <a href="/investigate.html" data-requires-auth="true">Investigation</a>
+      <a href="/analytics.html" data-requires-auth="true">Analytics</a>
+      <a href="/history.html" data-requires-auth="true">History</a>
+      <a href="/help.html">Help</a>
+      <a href="/login.html" class="nav-login" data-when="guest" data-display="inline-flex">Login</a>
+      <a href="/register.html" data-when="guest">Register</a>
+      <a href="#" id="logout-btn" data-when="auth" data-display="inline" style="display:none">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="section">
+  <div class="container">
+    <div class="dash-banner" style="align-items:flex-start">
+      <div>
+        <h1 style="margin:0 0 4px">News Investigation Report</h1>
+        <p class="note" style="margin:0">Run URL analysis and claim fact-checking in one flow, with a single evidence-backed report.</p>
+      </div>
+      <div class="dash-actions">
+        <a class="btn primary" href="/analyze-url.html">Open URL Analysis</a>
+        <a class="btn" href="/fact-check.html">Claim Fact Check</a>
+      </div>
+    </div>
+
+    <div class="grid cols-2 mt-4">
+      <div>
+        <div class="card">
+          <h3 style="margin:0 0 12px">Article URL</h3>
+          <label for="inv-url" class="note" style="display:block;margin-bottom:6px">Paste a public news article URL</label>
+          <input id="inv-url" class="input" type="url" placeholder="https://www.example.com/news/story"/>
+          <div class="form-actions" style="margin-top:12px;gap:10px;align-items:center">
+            <button class="btn primary" id="inv-run">Run Investigation</button>
+            <span id="inv-status" class="note"></span>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3 style="margin:0 0 8px">What this report combines</h3>
+          <ul class="list" style="padding-left:18px;margin:0;line-height:1.8">
+            <li>Fetched title, snippet, and extracted article text</li>
+            <li>AI verdict for the article itself</li>
+            <li>Claim-by-claim fact-checking with evidence groups</li>
+            <li>Final summary with confidence and review warnings</li>
+          </ul>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3 style="margin:0 0 8px">Open a previous analysis</h3>
+          <p class="note" style="margin:0 0 10px;font-size:13px">If you opened this report from the URL analyzer, it will auto-load the article and build the report.</p>
+          <a href="/analyze-url.html" style="color:var(--primary-2)">→ Go to URL analyzer</a>
+        </div>
+      </div>
+
+      <div>
+        <div id="inv-summary"></div>
+        <div id="inv-factcheck" style="margin-top:12px"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-meta">
+      <div>© 2026 Deepfake News Detector</div>
+      <div class="note"><a href="/privacy.html">Privacy</a> • <a href="/support.html">Support</a> • <strong>Academic use only</strong></div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/auth-guard.js?v=20260314"></script>
+<script src="/js/app.js?v=20260314"></script>
+<script src="/js/investigate.js?v=20260314"></script>
+</body>
+</html>

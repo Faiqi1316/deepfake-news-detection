@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>History • Deepfake News Detector</title>
+    <link rel="stylesheet" href="/css/styles.css?v=20260314"/>
+</head>
+<body>
+<header class="header">
+    <div class="container nav">
+        <a class="brand" href="/"><img class="logo-img" src="/img/logo.svg" alt="Deepfake News Detector logo"/><span>Deepfake News Detector</span></a>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/predict.html" data-requires-auth="true">Predict</a>
+            <a href="/fact-check.html" data-requires-auth="true">Fact Check</a>
+            <a href="/analyze-url.html" data-requires-auth="true">Analyze URL</a>
+            <a href="/analytics.html" data-requires-auth="true">Analytics</a>
+            <a href="/history.html" data-requires-auth="true">History</a>
+            <a href="/help.html">Help</a>
+            <a href="/login.html" class="nav-login" data-when="guest" data-display="inline-flex">Login</a>
+            <a href="/register.html" data-when="guest">Register</a>
+            <a href="#" id="logout-btn" data-when="auth" data-display="inline" style="display:none">Logout</a>
+        </nav>
+    </div>
+</header>
+
+<main class="section">
+    <div class="container">
+        <div class="hero-card mb-4">
+            <div class="section-kicker">Archive</div>
+            <h1 style="margin:10px 0 8px">Prediction History</h1>
+            <p class="section-intro" style="margin:0">Browse, filter, and export your previous analyses. The archive is designed as a forensic log so you can review what was checked, why it was flagged, and how confidence changed over time.</p>
+            <div class="hero-stats">
+                <div class="hero-stat"><strong>Traceable</strong><span>Every item keeps the verdict and confidence</span></div>
+                <div class="hero-stat"><strong>Filterable</strong><span>Search by type, result, or snippet</span></div>
+                <div class="hero-stat"><strong>Exportable</strong><span>Download the archive as CSV anytime</span></div>
+            </div>
+        </div>
+
+        <div class="detail-grid mb-4">
+            <div class="detail-card">
+                <h3>Why history matters</h3>
+                <p>A single prediction can be useful, but repeated review gives you a better picture of your sources, the model’s confidence, and the kinds of misinformation you encounter most.</p>
+            </div>
+            <div class="detail-card">
+                <h3>How to use the archive</h3>
+                <p>Use the filters to narrow by text or URL. Then inspect the snippet, confidence, and result to understand whether the item needs fact-checking or manual review.</p>
+            </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px">
+            <div>
+                <div class="small-label">Recent activity</div>
+                <h2 style="margin:0 0 4px">Prediction History</h2>
+                <p class="note" style="margin:0">Browse, filter, and export your previous analyses.</p>
+            </div>
+            <button class="btn" id="export-csv-btn">Export CSV</button>
+        </div>
+
+        <div class="filter-bar">
+            <select id="filter-type">
+                <option value="">All types</option>
+                <option value="text">Text</option>
+                <option value="url">URL</option>
+            </select>
+            <select id="filter-verdict">
+                <option value="">All verdicts</option>
+                <option value="Fake">Fake</option>
+                <option value="Real">Real</option>
+            </select>
+            <input id="filter-search" type="text" placeholder="Search snippet or filename..."/>
+            <div class="filter-actions">
+                <button class="btn" id="filter-reset-btn">Reset</button>
+                <button class="btn primary" id="filter-apply-btn">Apply</button>
+            </div>
+        </div>
+
+        <div class="stats-mini">
+            <div class="stats-mini-item"><span class="note">Total:</span> <span class="stats-mini-num" id="hs-total">--</span></div>
+            <div class="stats-mini-item"><span class="note">Fake:</span> <span class="stats-mini-num" style="color:var(--danger)" id="hs-fake">--</span></div>
+            <div class="stats-mini-item"><span class="note">Real:</span> <span class="stats-mini-num" style="color:var(--success)" id="hs-real">--</span></div>
+            <div class="stats-mini-item"><span class="note">Avg Confidence:</span> <span class="stats-mini-num" id="hs-avg">--%</span></div>
+        </div>
+
+        <div class="card" style="padding:0;overflow:auto">
+            <table class="table" style="margin:0">
+                <thead>
+                <tr>
+                    <th>When</th>
+                    <th>Type</th>
+                    <th>Result</th>
+                    <th>Confidence</th>
+                    <th>Snippet / File</th>
+                </tr>
+                </thead>
+                <tbody id="history-tbody">
+                <tr>
+                    <td colspan="5" class="note" style="padding:20px;text-align:center"><span class="spinner"></span> Loading...</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel-soft mt-4">
+            <div class="section-kicker">Reading the archive</div>
+            <div class="detail-grid" style="margin-top:12px">
+                <div class="detail-card"><h3>When</h3><p>Shows the capture time so you can trace the sequence of checks during an investigation.</p></div>
+                <div class="detail-card"><h3>Type and verdict</h3><p>Separates text and URL checks while keeping Real and Fake judgments easy to scan.</p></div>
+                <div class="detail-card"><h3>Confidence</h3><p>Provides a quick read on how certain the system was, which helps you prioritize what to inspect further.</p></div>
+                <div class="detail-card"><h3>Snippet / file</h3><p>Preserves the context that triggered the model, making the archive more useful than a raw score list.</p></div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-meta">
+            <div>© 2026 Deepfake News Detector</div>
+            <div class="note"><a href="/privacy.html">Privacy</a> • <a href="/support.html">Support</a> • <strong>Academic use only</strong></div>
+        </div>
+    </div>
+</footer>
+
+<script src="/js/auth-guard.js?v=20260314"></script>
+<script src="/js/app.js?v=20260314"></script>
+<script src="/js/history.js?v=20260314"></script>
+</body>
+</html>

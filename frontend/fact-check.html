@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Fact Check • Deepfake News Detector</title>
+  <link rel="stylesheet" href="/css/styles.css?v=20260314"/>
+</head>
+<body>
+<header class="header">
+  <div class="container nav">
+    <a class="brand" href="/"><img class="logo-img" src="/img/logo.svg" alt="Deepfake News Detector logo"/><span>Deepfake News Detector</span></a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/predict.html" data-requires-auth="true">Predict</a>
+      <a href="/fact-check.html" data-requires-auth="true">Fact Check</a>
+      <a href="/analyze-url.html" data-requires-auth="true">Analyze URL</a>
+      <a href="/analytics.html" data-requires-auth="true">Analytics</a>
+      <a href="/history.html" data-requires-auth="true">History</a>
+      <a href="/help.html">Help</a>
+      <a href="/login.html" class="nav-login" data-when="guest" data-display="inline-flex">Login</a>
+      <a href="/register.html" data-when="guest">Register</a>
+      <a href="#" id="logout-btn" data-when="auth" data-display="inline" style="display:none">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="section">
+  <div class="container">
+    <h1 style="margin:0 0 6px">Claim-Level Fact Check</h1>
+    <p class="note" style="margin:0 0 20px">Submit a claim or news paragraph to get a structured fact-check verdict, confidence, and corrective reasoning.</p>
+    <div id="fc-source-status" class="alert" style="margin:0 0 16px;display:none"></div>
+
+    <div class="grid cols-2">
+      <div>
+        <div class="card">
+          <h3 style="margin:0 0 12px">Text to fact-check</h3>
+          <label for="fc-text" class="note" style="display:block;margin-bottom:6px">Paste article paragraphs or claims</label>
+          <textarea id="fc-text" rows="10" placeholder="Paste news text or claims..."></textarea>
+          <div class="form-actions" style="margin-top:12px;gap:10px;align-items:center">
+            <button id="fc-run" class="btn primary">Run Fact Check</button>
+            <span id="fc-status" class="note"></span>
+          </div>
+        </div>
+
+        <div class="disclaimer">
+          This module is a research prototype. Evidence retrieval is limited by external APIs and source availability. Always manually verify high-impact claims.
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="card">
+          <h3 style="margin:0 0 8px">What you get</h3>
+          <ul class="list" style="padding-left:18px;margin:0">
+            <li>Overall verdict banner (likely true/false/inconclusive)</li>
+            <li>Claim-level verdict with confidence</li>
+            <li>Structured reasoning and corrective information</li>
+            <li>Supporting/refuting/neutral source buckets</li>
+            <li>Source links for manual verification</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 style="margin:0 0 8px">Best practices</h3>
+          <ul class="list" style="padding-left:18px;margin:0">
+            <li>Use concise, declarative claims for best results</li>
+            <li>Avoid combining multiple unrelated claims in one paragraph</li>
+            <li>Always verify high-impact claims with trusted sources</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="fc-results" style="margin-top:18px"></div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-meta">
+      <div>© 2026 Deepfake News Detector</div>
+      <div class="note"><a href="/privacy.html">Privacy</a> • <a href="/support.html">Support</a> • <strong>Academic use only</strong></div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/auth-guard.js?v=20260314"></script>
+<script src="/js/app.js?v=20260314"></script>
+<script src="/js/fact-check.js?v=20260314"></script>
+</body>
+</html>

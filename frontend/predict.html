@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Predict • Deepfake News Detector</title>
+  <link rel="stylesheet" href="/css/styles.css?v=20260512"/>
+  <style>
+    .module-tabs {
+      display: flex;
+      gap: 0;
+      margin: 32px 0 24px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0;
+    }
+    .module-tabs .tab-btn {
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px 28px;
+      margin-bottom: -2px;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+    }
+    .module-tabs .tab-btn:hover {
+      color: var(--text-primary);
+    }
+    .module-tabs .tab-btn.active {
+      border-bottom-color: var(--primary-2);
+      color: var(--primary-2);
+    }
+    .tab-pane {
+      display: none;
+      margin-top: 32px;
+      animation: fadeIn 0.3s ease;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+<header class="header">
+  <div class="container nav">
+    <a class="brand" href="/"><img class="logo-img" src="/img/logo.svg" alt="Deepfake News Detector logo"/><span>Deepfake News Detector</span></a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/predict.html" data-requires-auth="true">Predict</a>
+      <a href="/fact-check.html" data-requires-auth="true">Fact Check</a>
+      <a href="/analyze-url.html" data-requires-auth="true">Analyze URL</a>
+      <a href="/analytics.html" data-requires-auth="true">Analytics</a>
+      <a href="/history.html" data-requires-auth="true">History</a>
+      <a href="/help.html">Help</a>
+      <a href="/login.html" class="nav-login" data-when="guest" data-display="inline-flex">Login</a>
+      <a href="/register.html" data-when="guest">Register</a>
+      <a href="#" id="logout-btn" data-when="auth" data-display="inline" style="display:none">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="section">
+  <div class="container">
+    <!-- Hero Section -->
+    <div class="hero-card mb-4">
+      <div class="section-kicker">Content Verification Platform</div>
+      <h1 style="margin:10px 0 8px">AI-Powered Content Verification</h1>
+      <p class="section-intro" style="margin:0">Classify text and URLs as Real or Fake with advanced AI detection and detailed explanations. Select your analysis method to get started.</p>
+    </div>
+
+    <!-- Module Navigation -->
+    <div class="module-tabs" id="predict-tabs">
+      <button class="tab-btn active" data-tab="text">📝 Text Analysis</button>
+      <button class="tab-btn" data-tab="url">🔗 URL Analysis</button>
+    </div>
+
+    <!-- ── TEXT TAB ── -->
+    <div class="tab-pane active" id="tab-text">
+      <div class="grid cols-2">
+        <div>
+          <div class="card">
+            <h3 style="margin:0 0 12px">Paste Article or News Text</h3>
+            <form id="text-form">
+              <div class="form-row">
+                <label>Content to analyze <span id="char-count" class="note" style="float:right">0 chars</span></label>
+                <textarea id="text-input" rows="9" placeholder="Paste any news article, social media post, or statement here…" style="resize:vertical"></textarea>
+              </div>
+              <div class="form-actions" style="gap:10px">
+                <button class="btn primary" type="submit" id="text-btn">Analyze Text</button>
+                <button class="btn" type="button" id="explain-btn" style="display:none">� Show Explanation</button>
+              </div>
+            </form>
+          </div>
+
+          <div id="text-output" style="margin-top:12px"></div>
+          <div id="explain-output" style="margin-top:12px"></div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <!-- Last result panel -->
+          <div class="card" id="last-result-panel">
+            <h3 style="margin:0 0 10px">Last Result</h3>
+            <div id="last-result" class="note">No results yet. Submit text or a URL.</div>
+          </div>
+          <!-- Usage tips -->
+          <div class="card">
+            <h3 style="margin:0 0 8px">� Tips for best results</h3>
+            <ul class="list" style="margin:0;padding-left:18px">
+              <li>Use at least 2–3 sentences for accurate predictions</li>
+              <li>Paste full article text rather than headlines only</li>
+              <li>After analyzing, click <strong>Show Explanation</strong> to see which sentences are suspicious</li>
+              <li>Run <a href="/fact-check.html" style="color:var(--primary-2)">Fact Check</a> alongside for source evidence</li>
+            </ul>
+          </div>
+          <!-- Recent results mini list -->
+          <div class="card">
+            <h3 style="margin:0 0 8px">Recent Results</h3>
+            <div id="recent-list" class="note">Nothing yet this session.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── URL TAB ── -->
+    <div class="tab-pane" id="tab-url">
+      <div class="grid cols-2">
+        <div>
+          <div class="card">
+            <h3 style="margin:0 0 12px">Analyze a News URL</h3>
+            <p class="note" style="margin:0 0 12px">We'll fetch the article, extract its text, and classify it automatically.</p>
+            <div class="form-row">
+              <label>Article URL</label>
+              <input id="url-input-predict" class="input" type="url" placeholder="https://example.com/news/article"/>
+            </div>
+            <div class="form-actions">
+              <button class="btn primary" id="url-predict-btn">Fetch &amp; Analyze</button>
+              <span id="url-predict-status" class="note"></span>
+            </div>
+            <div id="url-predict-output" style="margin-top:12px"></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3 style="margin:0 0 8px">🔗 How URL analysis works</h3>
+          <ol class="list" style="padding-left:18px;margin:0">
+            <li>We fetch the page and extract visible article text</li>
+            <li>The text is passed through the same AI classification pipeline</li>
+            <li>Result includes article title, extracted excerpt, and verdict</li>
+          </ol>
+          <div class="disclaimer" style="margin-top:14px">
+            Only publicly accessible pages are supported. Paywalled or JavaScript-rendered pages may not extract cleanly. Use <a href="/analyze-url.html" style="color:var(--primary-2)">the dedicated URL page</a> for more detail.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-meta">
+      <div>© 2026 Deepfake News Detector</div>
+      <div class="note"><a href="/privacy.html">Privacy</a> • <a href="/support.html">Support</a> • <strong>Academic use only</strong></div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/auth-guard.js?v=20260506"></script>
+<script src="/js/app.js?v=20260714"></script>
+<script src="/js/predict.js?v=20260714"></script>
+</body>
+</html>
