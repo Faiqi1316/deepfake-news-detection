@@ -1,0 +1,61 @@
+# Build artifacts
+backend/dotnet-api/bin/
+backend/dotnet-api/obj/
+bin/
+obj/
+
+# Python virtual environments
+backend/ml-service/venv/
+backend/ml-service/.venv/
+.venv/
+venv/
+
+# Python caches
+__pycache__/
+backend/ml-service/__pycache__/
+
+# Logs and runtime files
+backend/ml-service/uvicorn.out.log
+backend/ml-service/uvicorn.err.log
+backend/ml-service/uvicorn.pid
+*.log
+*.pid
+
+# Local database
+backend/dotnet-api/deepfakenews.db
+*.db
+*.db-shm
+*.db-wal
+
+# ML caches and models
+backend/ml-service/hf_cache/
+backend/ml-service/models/
+
+# Environment / secrets
+.env
+*.secret
+GOOGLE_FACTCHECK_API_KEY.txt
+NEWS_API_KEY.txt
+OPENAI_API_KEY.txt
+GEMINI_API_KEY.txt
+JWT_SECRET*.txt
+
+# Data and large files
+data/
+logs/
+
+# Training/colab docs (not part of the public showcase)
+docs/
+
+# IDE settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Model checkpoints
+*.ckpt
+*.pth
+*.h5
+*.joblib
+*.pkl
